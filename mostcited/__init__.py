@@ -37,8 +37,14 @@ class MostCited:
             api_url = self.__url_find_by_url( url )
         else:
             api_url =self.__url_find_by_date( date )
-        var = requests.get(  api_url , headers= self.HEADERS  ).text
-        return json.loads( var )
+        response = requests.get(  api_url , headers= self.HEADERS  ).text
+        json_response = json.loads( response )
+        out = dict()
+        if 'data' in json_response.keys():
+            for data in json_response['data']:
+                out[ data['label'] ] = data['value']
+        return out
+
     @staticmethod
     def __domain():
         return "http://54.173.240.207:8080"
