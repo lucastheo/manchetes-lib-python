@@ -6,15 +6,15 @@ import json
 class MostCited:
     @classmethod
     def __init__(self , HEADERS = None):
-        self.__keys = ( datetime.datetime.now() , None )
+        self.__subject = ( datetime.datetime.now() , None )
         if HEADERS != None: self.HEADERS = HEADERS
         else:               self.HEADERS = { "user-email":"lucastheo.g.a@gmail.com"}
     @classmethod
     def __get_keys(self):
-        if self.__keys[ 1 ] == None or self.__keys[ 0 ] + datetime.timedelta(minutes=5) < datetime.datetime.now():
+        if self.__subject[ 1 ] == None or self.__subject[ 0 ] + datetime.timedelta(minutes=5) < datetime.datetime.now():
             var = requests.get(  self.__url_key() , headers= self.HEADERS  ).text            
-            self.__keys = json.loads( var )
-        return self.__keys
+            self.__subject = json.loads( var )
+        return self.__subject
     @classmethod
     def keys_tuples( self ):
         out = list()
@@ -47,7 +47,8 @@ class MostCited:
 
     @staticmethod
     def __domain():
-        return "http://54.173.240.207:8080"
+        return "http://localhost:8080"
+        #return "http://54.173.240.207:8080"
     @staticmethod
     def __url_key():
         return f"{MostCited.__domain()}/data/query/most_cited_keys?data=True&url=True"
